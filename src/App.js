@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import MyDiv from './MyDiv';
 import './App.css';
 import { useState, createContext, useEffect } from 'react';
@@ -6,32 +5,37 @@ import DetailsInput from './components/DetailsInput';
 import PageHeader from './components/PageHeader';
 import Container from './components/Container';
 import Counter from './components/Counter';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserInfo, setDataAction, setErrorAction, setLoadingAction } from './reducers/userInfo';
 
-import { Provider } from 'react-redux';
-import store from './reducers/store';
 
 const MyAppContext = createContext();
 
 function App() {
 
-  const [details, setDetails] = useState([]);
   const [userInfo, setUserInfo] = useState('myuser');   
 
-  useEffect(() => {
+  
+  const dispatch = useDispatch();
 
-    // Loading true...
-    fetch('/data.json')
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('*****', data);
-        setDetails(data);
-        // Loading false...
-        // Show data
-      })
-      .catch((err) => {
-          // Loading false...
-          // Show error
-      })
+  const loading = useSelector((state) => {
+    return state.userInfo.loading;
+  });
+
+  const error = useSelector((state) => {
+    return state.userInfo.error;
+  });
+
+  const details = useSelector((state) => {
+    return state.userInfo.data;
+  });
+
+  // pending
+  // fullfilled
+  // rejected
+
+  useEffect(() => {
+    dispatch(fetchUserInfo());
   }, []);
 
   function handleDelete (id) {
@@ -63,8 +67,14 @@ function App() {
   }
 
   return (
-    <Provider store={store}>
       <div className='App' id="aaaa">
+        {
+          error && <div>{error}</div>
+        }
+        {
+          loading && <div>LOADING .... </div>
+        }
+    
         <PageHeader />
         <DetailsInput  onSubmit={handleSubmit}/>
         <Container>
@@ -88,7 +98,6 @@ function App() {
           }
       </Container>
       </div>
-    </Provider>
   );
 }
 

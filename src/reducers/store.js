@@ -1,4 +1,5 @@
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk'
 import counterReducer from './counter';
 import showDeleteReducer from './showDelete';
 import userInfoReducer from './userInfo';
@@ -11,25 +12,7 @@ const reducer = combineReducers({
 
 
 
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(thunk));
 
 export default store;
-
-
-// store.subscribe(() => {
-
-//     console.log('HELLO *** ', store.getState());
-// });
-
-
-
-// store.dispatch(incrementAction(4));
-
-
-// store.dispatch(decrementAction());
-
-
-// store.dispatch(resetAction());
-
-
 

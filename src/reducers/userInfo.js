@@ -27,6 +27,22 @@ function userInfoReducer(state = INITIAL_STATE, action) {
     }
 }
 
+function fetchUserInfo() {
+    return function(dispatch, state) {
+        dispatch(setLoadingAction(true));
+        fetch('/data.json')
+            .then((response) => response.json())
+            .then((data) => {
+                dispatch(setDataAction(data))
+                dispatch(setLoadingAction(false));
+            })
+            .catch((err) => {
+                dispatch(setErrorAction('An Error Occured'))
+                dispatch(setLoadingAction(false));
+            })
+    }
+}
+
 function setDataAction(data = []) {
     return {
         type: 'SET_DATA',
@@ -43,7 +59,7 @@ function setLoadingAction(isLoading) {
 
 function setErrorAction(err) {
     return {
-        type: 'INCREMENT',
+        type: 'SET_ERROR',
         payload: err
     };
 }
@@ -51,8 +67,6 @@ function setErrorAction(err) {
 export default userInfoReducer;
 
 export {
-    setDataAction,
-    setLoadingAction,
-    setErrorAction
+    fetchUserInfo
 }
 
