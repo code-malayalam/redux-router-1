@@ -1,70 +1,36 @@
-const INITIAL_STATE = {
-    data: [],
-    error: '',
-    loading: false
-}
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-function userInfoReducer(state = INITIAL_STATE, action) {
-    switch (action.type) {
-        case 'SET_DATA':
-           return {
-            ...state,
-            data: action.payload
-           };
-        case 'SET_LOADING':
-            return {
-                ...state,
-                loading: action.payload
-            };
+const fetchUserInfo = createAsyncThunk('userInfo', () => {
+    return fetch('/data.json')
+        .then((response) => response.json());
+});
 
-        case 'SET_ERROR':
-            return {
-                ...state,
-                error: action.payload
-            };
-        default:
-            return state;
+const userInfoSlice = createSlice({
+    name: 'userInfo',
+    initialState: {
+        data: [],
+        error: '',
+        loading: false
+    },
+    extraReducers: (builder) => {
+        builder.addCase(fetchUserInfo.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(fetchUserInfo.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+
+        });
+        builder.addCase(fetchUserInfo.fulfilled, (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+
+        });
     }
-}
 
-function fetchUserInfo() {
-    return function(dispatch, state) {
-        dispatch(setLoadingAction(true));
-        fetch('/data.json')
-            .then((response) => response.json())
-            .then((data) => {
-                dispatch(setDataAction(data))
-                dispatch(setLoadingAction(false));
-            })
-            .catch((err) => {
-                dispatch(setErrorAction('An Error Occured'))
-                dispatch(setLoadingAction(false));
-            })
-    }
-}
+});
 
-function setDataAction(data = []) {
-    return {
-        type: 'SET_DATA',
-        payload: data
-    };
-}
-
-function setLoadingAction(isLoading) {
-    return {
-        type: 'SET_LOADING',
-        payload: isLoading
-    };
-}
-
-function setErrorAction(err) {
-    return {
-        type: 'SET_ERROR',
-        payload: err
-    };
-}
-
-export default userInfoReducer;
+export default userInfoSlice.reducer;
 
 export {
     fetchUserInfo

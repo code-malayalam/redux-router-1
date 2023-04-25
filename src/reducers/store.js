@@ -1,4 +1,5 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk'
 import counterReducer from './counter';
 import showDeleteReducer from './showDelete';
@@ -10,9 +11,12 @@ const reducer = combineReducers({
     userInfo: userInfoReducer
 });
 
+const store = configureStore({
+    reducer: reducer
+})
 
 
-const store = createStore(reducer, applyMiddleware(thunk));
+//const store = createStore(reducer, applyMiddleware(thunk));
 
 export default store;
 

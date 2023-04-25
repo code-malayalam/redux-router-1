@@ -1,44 +1,31 @@
 
-function counterReducer(state = 0, action) {
+import { createSlice } from '@reduxjs/toolkit';
 
-    switch (action.type) {
-        case 'INCREMENT':
-           return state + action.payload;
-        case 'DECREMENT':
+const counterSlice = createSlice({
+    name: 'counter',
+    initialState: 0,
+    reducers: {
+        incrementAction: (state, action) => {
+            return state + action.payload;
+        },
+        decrementAction: (state, action) => {
             return state - action.payload;
-        case 'RESET':
+        },
+        resetAction:  (state, action) => {
             return 0;
-        default:
-            return state;
+        },
     }
-}
+
+});
 
 
-// Action Creators
-function incrementAction(val = 1) {
-    return {
-        type: 'INCREMENT',
-        payload: val
-    };
-}
+const {incrementAction, decrementAction, resetAction} = counterSlice.actions;
 
-function decrementAction(val = 1) {
-    return {
-        type: 'DECREMENT',
-        payload: val
-    };
-}
+console.log(counterSlice.actions);
 
-function resetAction() {
-    return {
-        type: 'RESET',
-    };
-}
 
-export default counterReducer;
+export default counterSlice.reducer;
 
 export {
-    incrementAction,
-    decrementAction,
-    resetAction
+    incrementAction, decrementAction, resetAction
 }

@@ -1,22 +1,21 @@
+import { createSlice } from '@reduxjs/toolkit';
 
-function showDeleteReducer(state = true, action) {
-    switch (action.type) {
-        case 'SET_SHOW_DELETE':
+
+const showDeleteSlice = createSlice({
+    name: 'showDelete',
+    initialState: true,
+    reducers: {
+        setShowDelete: (state, action) => {
             return action.payload;
-        default:
-            return state;
-    }
-}
+        },
+    },
+
+});
 
 
-function setShowDelete(isShow) {
-    return {
-        type: 'SET_SHOW_DELETE',
-        payload: isShow
-    };
-}
+export default showDeleteSlice.reducer;
 
-export default showDeleteReducer;
+const {setShowDelete} = showDeleteSlice.actions;
 
 export {
     setShowDelete
