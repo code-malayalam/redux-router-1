@@ -1,12 +1,13 @@
-import MyDiv from './MyDiv';
+import MyDiv from '../MyDiv';
 import './App.css';
 import { useState, createContext, useEffect } from 'react';
-import DetailsInput from './components/DetailsInput';
-import PageHeader from './components/PageHeader';
-import Container from './components/Container';
-import Counter from './components/Counter';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserInfo, setDataAction, setErrorAction, setLoadingAction } from './reducers/userInfo';
+import DetailsInput from '../components/DetailsInput';
+import PageHeader from '../components/PageHeader';
+import Container from '../components/Container';
+import Counter from '../components/Counter';
+import { useSelector } from 'react-redux';
+import { fetchUserInfo, setDataAction, setErrorAction, setLoadingAction } from '../reducers/userInfo';
+import { useSearchParams } from 'react-router-dom';
 
 
 const MyAppContext = createContext();
@@ -16,7 +17,6 @@ function App() {
   const [userInfo, setUserInfo] = useState('myuser');   
 
   
-  const dispatch = useDispatch();
 
   const loading = useSelector((state) => {
     return state.userInfo.loading;
@@ -30,13 +30,13 @@ function App() {
     return state.userInfo.data;
   });
 
-  // pending
-  // fullfilled
-  // rejected
+  const [params, setParams] = useSearchParams();
 
-  useEffect(() => {
-    dispatch(fetchUserInfo());
-  }, []);
+
+
+  const isActiveState = params.get('state');
+
+
 
   function handleDelete (id) {
     // const newArr = details.filter((item) =>  item.id !== id);
@@ -75,12 +75,36 @@ function App() {
           loading && <div>LOADING .... </div>
         }
     
+        
         <PageHeader />
+
+        <select name="activeState" onChange={(evt) => {
+          setParams({
+            state: evt.target.value
+          });
+        }}>
+          <option value="all">All</option>
+          <option value="active">Active</option>
+          <option value="nonactive">Non Active</option>
+        </select>
         <DetailsInput  onSubmit={handleSubmit}/>
         <Container>
           <Counter />
           {
-              details.map((item, index) => {
+              details
+                .filter((item) => {
+                    if(isActiveState === 'all' || !isActiveState) {
+                      return true;
+                    }
+                    if(isActiveState === 'active') {
+                      return item.isActive === true;
+                    }
+
+                    if(isActiveState === 'nonactive') {
+                      return !item.isActive;
+                    }
+                })
+                .map((item, index) => {
                 return (
                   <MyAppContext.Provider value={userInfo} key={index}>
                     <MyDiv

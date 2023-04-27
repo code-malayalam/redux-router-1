@@ -1,22 +1,24 @@
 import { useContext } from "react";
-import { MyAppContext } from "./App";
-
+import { Link } from "react-router-dom";
+import { MyAppContext } from "./pages/App";
+import './HeaderDetails.scss';
 
 
 function  HeaderDetails(props) {
     const {
         title,
-        subtitle
+        id,
+        isActive
     } = props;
+
 
     const val = useContext(MyAppContext);
 
     return (
-        <>
+        <Link className="header-details" to={`/details/${id}`}>
             <div>Title: {title}</div>
-            <div>Subtitle: {subtitle}</div>
-            <div>User: {val}</div>
-        </>
+            <div>{isActive? 'ACTIVE' : 'NON ACTIVE'}</div>
+        </Link>
     );
 }
 

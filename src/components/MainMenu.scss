@@ -1,0 +1,14 @@
+
+.main-menu {
+    padding: 10px 20px;
+    background: rgb(43, 43, 74);
+    a {
+        color: white;
+        text-decoration: none;
+        margin-right: 10px;
+        &.active {
+            color: #8ca0d1;
+            text-decoration: underline;
+        }
+    }
+}

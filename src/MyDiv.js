@@ -47,13 +47,8 @@ function MyDiv(props) {
 
     return (
         <div className={val} ref={myRef}>
-            <HeaderDetails title={title} subtitle={subtitle} />
-            <div>Count = {count}</div>
-            <div>
-                <input type='checkbox' checked={isActive} onChange={(evt) => {
-                    onActiveChange(id, evt.target.checked);
-                }} />
-            </div>
+            <HeaderDetails title={title} subtitle={subtitle} id={id} isActive={isActive}/>
+    
 
             {
                 showDelete && <button onClick={handleClick}>Delete</button>
