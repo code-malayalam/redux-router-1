@@ -1,5 +1,5 @@
 export function AddressInfo() {
     return (
-        <div>ADDRESS INFO </div>
+        <div style={{height: '300px', background: 'green'}}>ADDRESS INFO </div>
     );
 }

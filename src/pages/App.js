@@ -7,7 +7,7 @@ import Container from '../components/Container';
 import Counter from '../components/Counter';
 import { useSelector } from 'react-redux';
 import { fetchUserInfo, setDataAction, setErrorAction, setLoadingAction } from '../reducers/userInfo';
-import { useSearchParams } from 'react-router-dom';
+import { useLoaderData, useRouteLoaderData, useSearchParams } from 'react-router-dom';
 
 
 const MyAppContext = createContext();
@@ -15,7 +15,7 @@ const MyAppContext = createContext();
 function App() {
 
   const [userInfo, setUserInfo] = useState('myuser');   
-
+  const details = useRouteLoaderData('base') || [];
   
 
   const loading = useSelector((state) => {
@@ -26,9 +26,9 @@ function App() {
     return state.userInfo.error;
   });
 
-  const details = useSelector((state) => {
-    return state.userInfo.data;
-  });
+  // const details = useSelector((state) => {
+  //   return state.userInfo.data;
+  // });
 
   const [params, setParams] = useSearchParams();
 

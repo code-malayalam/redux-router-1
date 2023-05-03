@@ -1,5 +1,5 @@
 export function PersonalInfo() {
     return (
-        <div>PERSONAL INFO </div>
+        <div style={{height: '300px', background: 'yellow'}}>PERSONAL INFO </div>
     );
 }

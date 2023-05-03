@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Link, NavLink, Outlet, Route, Routes, useParams } from "react-router-dom";
+import { Link, NavLink, Outlet, Route, Routes, useNavigate, useParams, useRouteLoaderData } from "react-router-dom";
 import { AddressInfo } from "./AddressInfo";
 import './Details.scss';
 import { OtherInfo } from "./OtherInfo";
@@ -9,9 +9,7 @@ import { PersonalInfo } from "./PersonalInfo";
 function Details() {
 
     const {id} = useParams();
-    const details = useSelector((state) => {
-        return state.userInfo.data;
-    });
+    const details = useRouteLoaderData('base') || [];
 
     const data = details.find((item) => {
         return item.id === id;
@@ -22,6 +20,8 @@ function Details() {
         subtitle,
         isActive
     } = data;
+
+    const navigate = useNavigate();
     
     console.log(data);
     return (
@@ -36,19 +36,21 @@ function Details() {
             <div>
                 {isActive ? 'ACTIVE': 'NON ACTIVE'}
             </div>
-            <div class="sub-info">
-                <div class="sub-header main-menu">
+            <div className="sub-info">
+                <div className="sub-header main-menu">
                     <NavLink end to=""> Address </NavLink>
                     <NavLink to="personal"> Personal Info </NavLink>
                     <NavLink to="others"> Other Info </NavLink>
                 </div>
-                <div class="sub-details ">
-
+                <div className="sub-details ">
                     <Outlet />
-                
                 </div>
 
             </div>
+            <button onClick={() => {
+                navigate('..');
+            }}>Go Back</button>
+           
         </div>
     );
 }

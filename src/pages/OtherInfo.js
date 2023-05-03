@@ -1,5 +1,5 @@
 export function OtherInfo() {
     return (
-        <div>OTHER INFO </div>
+        <div style={{height: '300px', background: 'blue'}}>OTHER INFO </div>
     );
 }
